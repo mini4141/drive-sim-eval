@@ -30,8 +30,25 @@ case "$phase" in
     URL="$(cat .local/cloud-url.txt)"
     BATCH="$(cat .local/cloud-batch.txt)"
     mkdir -p "$P"/{screenshots,logs,tests}
-    (cd viewer && node capture.mjs "$URL" "$ROOT/$P/screenshots" phase2 "$BATCH")
-    (cd viewer && VIEWER_URL="$URL" PW_REPORT="$ROOT/$P/tests/playwright-cloud" npx playwright test) \
+    export AWS_PROFILE=drive-sim-eval-deployer AWS_REGION=ap-southeast-2 AWS_PAGER=""
+    ARRAY_ID="$(cat .local/array-job-id.txt)"; AGG_ID="$(cat .local/aggregate-job-id.txt)"
+    aws batch describe-jobs --jobs "$ARRAY_ID" "$AGG_ID" | redact >"$P/logs/batch-describe-jobs.json"
+    CHILD_IDS="$(for i in $(seq 0 19); do printf '%s:%s ' "$ARRAY_ID" "$i"; done)"
+    aws batch describe-jobs --jobs $CHILD_IDS --query 'jobs[].{id:jobId,status:status}' | redact >"$P/logs/batch-children-status.json"
+    STREAM="$(aws batch describe-jobs --jobs "$ARRAY_ID:0" --query 'jobs[0].container.logStreamName' --output text | tr -d '')"
+    aws logs get-log-events --log-group-name /aws/batch/drive-sim-eval --log-stream-name "$STREAM" --query 'events[].message' --output text       | tr '	' '
+' | redact >"$P/logs/cloudwatch-sample.log"
+    {
+      echo "# Deployed resources (terraform state + describe calls), account ID redacted"
+      terraform -chdir=infra state list
+      terraform -chdir=infra output
+      aws batch describe-compute-environments --compute-environments drive-sim-eval-fargate --query 'computeEnvironments[].{name:computeEnvironmentName,type:computeResources.type,maxvCpus:computeResources.maxvCpus,state:state,status:status}'
+      aws batch describe-job-queues --job-queues drive-sim-eval-queue --query 'jobQueues[].{name:jobQueueName,state:state,status:status}'
+      aws ecr describe-repositories --repository-names drive-sim-eval --query 'repositories[].repositoryUri'
+      aws s3 ls
+    } 2>&1 | redact >"$P/resources.txt"
+    (cd viewer && node capture.mjs "$URL" "$HROOT/$P/screenshots" phase2 "$BATCH")
+    (cd viewer && VIEWER_URL="$URL" PW_REPORT="$HROOT/$P/tests/playwright-cloud" npx playwright test) \
       2>&1 | redact | tee "$P/tests/playwright-cloud.log"
     ;;
   *) echo "unknown phase" >&2; exit 2 ;;

@@ -4,7 +4,7 @@ Resume rule: read this file first, continue at the first unticked item.
 
 ## Phases
 - [x] Phase 0: scaffold
-- [ ] Phase 1: local build + proof
+- [x] Phase 1: local build + proof
 - [ ] Phase 2: AWS showcase + proof
 - [ ] Phase 3: destroy + verify
 - [ ] Phase 4: write-up
@@ -59,7 +59,7 @@ Resume rule: read this file first, continue at the first unticked item.
 - [x] screenshots/07-repro-green.png
 - [x] logs/perfetto-trace.json
 - [x] `scripts/test-all.sh` green
-- [ ] CI green on `main`
+- [x] CI green on `main`
 - [x] proof/README.md index complete
 
 ## Phase 2 proof (`proof/phase2-cloud/`)
@@ -81,3 +81,4 @@ Resume rule: read this file first, continue at the first unticked item.
 - [ ] everything committed and pushed
 
 ## Notes
+- Phase 1 complete 2026-11-25T08:39:56Z: CI green (4 jobs), test-all green, proof/phase1-local complete. Phase 2 started.

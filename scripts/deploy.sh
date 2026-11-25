@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Deploy to AWS from this PC: terraform apply -> push image -> upload scenarios -> Batch array job
-# -> aggregate job -> build + publish the viewer. Prints the CloudFront URL.
+# -> aggregate job -> build + publish the viewer. Prints the viewer URL.
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 cd "$ROOT"
 export AWS_PROFILE=drive-sim-eval-deployer AWS_REGION=ap-southeast-2 AWS_DEFAULT_REGION=ap-southeast-2
@@ -16,11 +16,11 @@ terraform -chdir=infra init -input=false
 terraform -chdir=infra apply -auto-approve -input=false
 
 ECR="$(tfout ecr_repository_url)"; DATA="$(tfout data_bucket)"; SITE="$(tfout site_bucket)"
-QUEUE="$(tfout job_queue)"; JOBDEF="$(tfout job_definition)"; CF_DOMAIN="$(tfout cloudfront_domain)"
-CF_ID="$(tfout cloudfront_id)"
+QUEUE="$(tfout job_queue)"; JOBDEF="$(tfout job_definition)"; SITE_URL="$(tfout site_url)"
 
 echo "== 2/7 build and push image"
-bash scripts/build-core.sh >/dev/null
+# Docker Desktop occasionally drops BuildKit connections; retry the image build
+for attempt in 1 2 3; do build_images && break || { echo "image build failed (attempt $attempt)"; sleep 20; }; done
 aws ecr get-login-password | docker login --username AWS --password-stdin "${ECR%%/*}"
 docker tag "$RUNTIME_IMAGE" "$ECR:latest"
 docker push "$ECR:latest"
@@ -67,8 +67,8 @@ echo "== 6/7 build and publish the viewer"
 (cd viewer && npm ci --silent && VITE_RESULTS_BASE_URL=/results npm run build)
 aws s3 sync viewer/dist "s3://$SITE/" --delete --exclude "results/*" --only-show-errors
 
-echo "== 7/7 wait for CloudFront"
-aws cloudfront wait distribution-deployed --id "$CF_ID"
-echo "https://$CF_DOMAIN" >.local/cloud-url.txt
+echo "== 7/7 check the public endpoint"
+for _ in $(seq 1 12); do curl -sf "$SITE_URL/results/batches.json" >/dev/null && break; sleep 5; done
+echo "$SITE_URL" >.local/cloud-url.txt
 echo "$BATCH_ID" >.local/cloud-batch.txt
-echo "Viewer: https://$CF_DOMAIN  (batch $BATCH_ID)"
+echo "Viewer: $SITE_URL  (batch $BATCH_ID)"

@@ -1,0 +1,191 @@
+{
+    "jobs": [
+        {
+            "jobArn": "arn:aws:batch:ap-southeast-2:<ACCOUNT_ID>:job/b696b993-0614-4634-98d1-efa73cd74fff",
+            "jobName": "sim-shards-cloud-001",
+            "jobId": "b696b993-0614-4634-98d1-efa73cd74fff",
+            "jobQueue": "arn:aws:batch:ap-southeast-2:<ACCOUNT_ID>:job-queue/drive-sim-eval-queue",
+            "status": "SUCCEEDED",
+            "attempts": [],
+            "createdAt": <ACCOUNT_ID>1,
+            "dependsOn": [],
+            "jobDefinition": "arn:aws:batch:ap-southeast-2:<ACCOUNT_ID>:job-definition/drive-sim-eval-job:1",
+            "parameters": {},
+            "container": {
+                "image": "<ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/drive-sim-eval:latest",
+                "command": [
+                    "batch-shard",
+                    "--shard-size",
+                    "10",
+                    "--in",
+                    "s3://drive-sim-eval-data-<ACCOUNT_ID>/scenarios",
+                    "--out",
+                    "s3://drive-sim-eval-site-<ACCOUNT_ID>/results/cloud-001",
+                    "--config",
+                    "configs/open_loop.yaml"
+                ],
+                "jobRoleArn": "arn:aws:iam::<ACCOUNT_ID>:role/drive-sim-eval-batch-job",
+                "executionRoleArn": "arn:aws:iam::<ACCOUNT_ID>:role/drive-sim-eval-batch-execution",
+                "volumes": [],
+                "environment": [
+                    {
+                        "name": "AWS_REGION",
+                        "value": "ap-southeast-2"
+                    }
+                ],
+                "mountPoints": [],
+                "ulimits": [],
+                "networkInterfaces": [],
+                "resourceRequirements": [
+                    {
+                        "value": "1",
+                        "type": "VCPU"
+                    },
+                    {
+                        "value": "2048",
+                        "type": "MEMORY"
+                    }
+                ],
+                "logConfiguration": {
+                    "logDriver": "awslogs",
+                    "options": {
+                        "awslogs-group": "/aws/batch/drive-sim-eval",
+                        "awslogs-region": "ap-southeast-2",
+                        "awslogs-stream-prefix": "sim"
+                    },
+                    "secretOptions": []
+                },
+                "secrets": [],
+                "networkConfiguration": {
+                    "assignPublicIp": "ENABLED"
+                },
+                "fargatePlatformConfiguration": {
+                    "platformVersion": "LATEST"
+                },
+                "runtimePlatform": {
+                    "operatingSystemFamily": "LINUX",
+                    "cpuArchitecture": "X86_64"
+                }
+            },
+            "arrayProperties": {
+                "statusSummary": {
+                    "STARTING": 0,
+                    "FAILED": 0,
+                    "RUNNING": 0,
+                    "SUCCEEDED": 20,
+                    "RUNNABLE": 0,
+                    "SUBMITTED": 0,
+                    "PENDING": 0
+                },
+                "statusSummaryLastUpdatedAt": <ACCOUNT_ID>0,
+                "size": 20
+            },
+            "tags": {},
+            "propagateTags": false,
+            "platformCapabilities": [
+                "FARGATE"
+            ],
+            "eksAttempts": []
+        },
+        {
+            "jobArn": "arn:aws:batch:ap-southeast-2:<ACCOUNT_ID>:job/38688b4e-a388-4be2-b526-522b7c35ead1",
+            "jobName": "sim-aggregate-cloud-001",
+            "jobId": "38688b4e-a388-4be2-b526-522b7c35ead1",
+            "jobQueue": "arn:aws:batch:ap-southeast-2:<ACCOUNT_ID>:job-queue/drive-sim-eval-queue",
+            "status": "SUCCEEDED",
+            "attempts": [
+                {
+                    "container": {
+                        "taskArn": "arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:task/drive-sim-eval-fargate_Batch_c4dc4383-4033-324d-9ecc-9c9670b7f554/236bab8c1cdf47b2b7e432c63d40b833",
+                        "exitCode": 0,
+                        "logStreamName": "sim/default/236bab8c1cdf47b2b7e432c63d40b833",
+                        "networkInterfaces": [
+                            {
+                                "attachmentId": "a39df561-2a26-4bcb-bc56-f35ae645acb3",
+                                "privateIpv4Address": "10.20.0.244"
+                            }
+                        ]
+                    },
+                    "startedAt": <ACCOUNT_ID>4,
+                    "stoppedAt": <ACCOUNT_ID>4,
+                    "statusReason": "Essential container in task exited"
+                }
+            ],
+            "statusReason": "Essential container in task exited",
+            "createdAt": <ACCOUNT_ID>9,
+            "startedAt": <ACCOUNT_ID>4,
+            "stoppedAt": <ACCOUNT_ID>4,
+            "dependsOn": [
+                {
+                    "jobId": "b696b993-0614-4634-98d1-efa73cd74fff"
+                }
+            ],
+            "jobDefinition": "arn:aws:batch:ap-southeast-2:<ACCOUNT_ID>:job-definition/drive-sim-eval-job:1",
+            "parameters": {},
+            "container": {
+                "image": "<ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/drive-sim-eval:latest",
+                "command": [
+                    "aggregate",
+                    "--out",
+                    "s3://drive-sim-eval-site-<ACCOUNT_ID>/results/cloud-001"
+                ],
+                "jobRoleArn": "arn:aws:iam::<ACCOUNT_ID>:role/drive-sim-eval-batch-job",
+                "executionRoleArn": "arn:aws:iam::<ACCOUNT_ID>:role/drive-sim-eval-batch-execution",
+                "volumes": [],
+                "environment": [
+                    {
+                        "name": "AWS_REGION",
+                        "value": "ap-southeast-2"
+                    }
+                ],
+                "mountPoints": [],
+                "ulimits": [],
+                "exitCode": 0,
+                "taskArn": "arn:aws:ecs:ap-southeast-2:<ACCOUNT_ID>:task/drive-sim-eval-fargate_Batch_c4dc4383-4033-324d-9ecc-9c9670b7f554/236bab8c1cdf47b2b7e432c63d40b833",
+                "logStreamName": "sim/default/236bab8c1cdf47b2b7e432c63d40b833",
+                "networkInterfaces": [
+                    {
+                        "attachmentId": "a39df561-2a26-4bcb-bc56-f35ae645acb3",
+                        "privateIpv4Address": "10.20.0.244"
+                    }
+                ],
+                "resourceRequirements": [
+                    {
+                        "value": "1",
+                        "type": "VCPU"
+                    },
+                    {
+                        "value": "2048",
+                        "type": "MEMORY"
+                    }
+                ],
+                "logConfiguration": {
+                    "logDriver": "awslogs",
+                    "options": {
+                        "awslogs-group": "/aws/batch/drive-sim-eval",
+                        "awslogs-region": "ap-southeast-2",
+                        "awslogs-stream-prefix": "sim"
+                    },
+                    "secretOptions": []
+                },
+                "secrets": [],
+                "networkConfiguration": {
+                    "assignPublicIp": "ENABLED"
+                },
+                "fargatePlatformConfiguration": {
+                    "platformVersion": "LATEST"
+                },
+                "runtimePlatform": {
+                    "operatingSystemFamily": "LINUX",
+                    "cpuArchitecture": "X86_64"
+                }
+            },
+            "tags": {},
+            "propagateTags": false,
+            "platformCapabilities": [
+                "FARGATE"
+            ],
+            "eksAttempts": []
+        }
+    ]
+}

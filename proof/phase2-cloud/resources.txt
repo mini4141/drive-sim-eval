@@ -1,0 +1,62 @@
+# Deployed resources (terraform state + describe calls), account ID redacted
+data.aws_availability_zones.available
+data.aws_caller_identity.current
+data.aws_iam_policy_document.assume_batch
+data.aws_iam_policy_document.assume_ecs_tasks
+data.aws_iam_policy_document.job
+data.aws_iam_policy_document.site_public_read
+aws_batch_compute_environment.fargate
+aws_batch_job_definition.sim
+aws_batch_job_queue.main
+aws_cloudwatch_log_group.batch
+aws_ecr_repository.main
+aws_iam_role.batch_service
+aws_iam_role.execution
+aws_iam_role.job
+aws_iam_role_policy.job
+aws_iam_role_policy_attachment.batch_service
+aws_iam_role_policy_attachment.execution
+aws_internet_gateway.main
+aws_route_table.public
+aws_route_table_association.public[0]
+aws_route_table_association.public[1]
+aws_s3_bucket.data
+aws_s3_bucket.site
+aws_s3_bucket_policy.site
+aws_s3_bucket_public_access_block.data
+aws_s3_bucket_public_access_block.site
+aws_s3_bucket_website_configuration.site
+aws_security_group.batch
+aws_subnet.public[0]
+aws_subnet.public[1]
+aws_vpc.main
+compute_environment = "drive-sim-eval-fargate"
+data_bucket = "drive-sim-eval-data-<ACCOUNT_ID>"
+ecr_repository_url = "<ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/drive-sim-eval"
+job_definition = "drive-sim-eval-job"
+job_queue = "drive-sim-eval-queue"
+log_group = "/aws/batch/drive-sim-eval"
+region = "ap-southeast-2"
+site_bucket = "drive-sim-eval-site-<ACCOUNT_ID>"
+site_url = "http://drive-sim-eval-site-<ACCOUNT_ID>.s3-website-ap-southeast-2.amazonaws.com"
+[
+    {
+        "name": "drive-sim-eval-fargate",
+        "type": "FARGATE",
+        "maxvCpus": 16,
+        "state": "ENABLED",
+        "status": "VALID"
+    }
+]
+[
+    {
+        "name": "drive-sim-eval-queue",
+        "state": "ENABLED",
+        "status": "VALID"
+    }
+]
+[
+    "<ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/drive-sim-eval"
+]
+2026-11-25 15:40:49 drive-sim-eval-data-<ACCOUNT_ID>
+2026-11-25 15:43:42 drive-sim-eval-site-<ACCOUNT_ID>
