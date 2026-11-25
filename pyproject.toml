@@ -1,0 +1,40 @@
+[build-system]
+requires = ["scikit-build-core>=0.10", "pybind11>=2.13"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "simcore"
+version = "0.1.0"
+description = "Drive Sim Eval: C++ simulation core (pybind11) and simeval CLI"
+requires-python = ">=3.12"
+dependencies = [
+  "numpy>=2.0",
+  "pandas>=2.2",
+  "typer>=0.12",
+  "pyyaml>=6.0",
+  "boto3>=1.35",
+]
+
+[project.scripts]
+simeval = "simeval.cli:app"
+
+[dependency-groups]
+dev = ["pytest>=8.0", "ruff>=0.6"]
+
+[tool.scikit-build]
+cmake.source-dir = "core"
+cmake.define = { SIMCORE_BUILD_PYTHON = "ON", SIMCORE_BUILD_TESTS = "OFF" }
+wheel.packages = ["simeval"]
+sdist.include = ["core", "bindings", "simeval"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+extend-exclude = ["viewer", "build"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["B008"]  # typer.Option defaults are the library idiom
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

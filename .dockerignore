@@ -1,0 +1,9 @@
+*
+!core/
+!bindings/
+!simeval/
+!configs/
+!tools/
+!pyproject.toml
+!uv.lock
+!README.md

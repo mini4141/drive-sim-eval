@@ -1,0 +1,9 @@
+name: robot
+type: diff_drive
+max_steer: 1.5          # yaw rate, rad/s
+max_steer_rate: 20.0
+max_accel: 1.0
+max_brake: 2.0
+max_speed: 3.0
+latency_steps: 0
+pid: {kp: 1.5, ki: 0.2, kd: 0.0, i_max: 2.0}

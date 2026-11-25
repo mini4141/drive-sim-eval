@@ -1,0 +1,10 @@
+# Divergence tracing: replay the on-road commands through the simulated vehicle and compare every interface.
+mode: closed_loop
+platform: car
+obs_noise: 0.002
+log_level: warn
+trace: full
+spans: false
+components: {policy: mlp, router: astar, controller: log_replay, vehicle: platform}
+policy_weights_path: tools/policy_weights.json
+thresholds: {action_l2_error: 0.5}

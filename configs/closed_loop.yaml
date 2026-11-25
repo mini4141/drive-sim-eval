@@ -1,0 +1,11 @@
+# Closed-loop: the learned policy drives the vehicle model.
+mode: closed_loop
+platform: car
+horizon_s: 150
+obs_noise: 0.002
+log_level: info
+trace: full
+spans: true
+components: {policy: mlp, router: astar, controller: pid, vehicle: platform}
+policy_weights_path: tools/policy_weights.json
+thresholds: {action_l2_error: 0.5}

@@ -1,0 +1,11 @@
+# Same dynamics as the car plus 4 ticks (0.2 s) of actuator latency: the "real vehicle" in the on-road logs.
+name: van
+type: bicycle
+wheelbase: 2.8
+max_steer: 0.6
+max_steer_rate: 0.8
+max_accel: 3.0
+max_brake: 6.0
+max_speed: 30.0
+latency_steps: 4
+pid: {kp: 1.2, ki: 0.1, kd: 0.05, i_max: 3.0}

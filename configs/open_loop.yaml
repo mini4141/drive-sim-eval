@@ -1,0 +1,10 @@
+# Open-loop: ego states come from the on-road log, the policy's actions are scored against logged actions.
+mode: open_loop
+platform: car
+obs_noise: 0.002
+log_level: info
+trace: summary
+spans: false
+components: {policy: mlp, router: astar, controller: pid, vehicle: log_replay}
+policy_weights_path: tools/policy_weights.json
+thresholds: {action_l2_error: 0.5}

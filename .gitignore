@@ -1,0 +1,30 @@
+# build / deps
+build/
+dist/
+_skbuild/
+*.egg-info/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.venv/
+node_modules/
+viewer/dist/
+.local/
+# generated data
+scenarios/
+results/
+!proof/**/results/
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl.bak
+infra/*.tfvars
+infra/tfplan
+cdk.out/
+.env
+*.pem
+*.key
+playwright-report/
+test-results/
+viewer/playwright-report/
+viewer/test-results/
