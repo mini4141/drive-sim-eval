@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+env:
+  SIMEVAL_NATIVE: "1"
+
+jobs:
+  core:
+    name: C++ core (CMake + ctest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y ninja-build libeigen3-dev nlohmann-json3-dev libgtest-dev
+      - run: |
+          cd core
+          cmake --preset release
+          cmake --build --preset release
+          ctest --preset release --output-junit "$GITHUB_WORKSPACE/ctest-junit.xml"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: ctest-junit, path: ctest-junit.xml }
+
+  python:
+    name: Python (wheel, ruff, pytest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y ninja-build libeigen3-dev nlohmann-json3-dev
+      - uses: astral-sh/setup-uv@v5
+        with: { python-version: "3.12" }
+      - run: uv sync --frozen --no-editable
+      - run: uv run --no-sync ruff check .
+      - run: uv run --no-sync pytest -v --junitxml=pytest-junit.xml
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: pytest-junit, path: pytest-junit.xml }
+
+  viewer:
+    name: Viewer (tsc, vitest, build)
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: viewer } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "24" }
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - run: npm test
+      - run: npm run build
+
+  e2e:
+    name: Playwright e2e (seeded data)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y ninja-build libeigen3-dev nlohmann-json3-dev
+      - uses: astral-sh/setup-uv@v5
+        with: { python-version: "3.12" }
+      - uses: actions/setup-node@v4
+        with: { node-version: "24" }
+      - run: uv sync --frozen --no-editable
+      - run: echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
+      - run: bash scripts/seed.sh
+      - run: cd viewer && npm ci && npx playwright install --with-deps chromium
+      - run: cd viewer && npx playwright test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: playwright-report, path: viewer/playwright-report }

@@ -1,0 +1,37 @@
+:root {
+  --bg: #0f1419; --panel: #171e26; --line: #2a3441; --text: #e6edf3; --muted: #8b98a8;
+  --accent: #4aa3ff; --ok: #3fb950; --bad: #f85149; --warn: #d29922;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.5 system-ui, sans-serif; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+header.nav { display: flex; gap: 24px; align-items: center; padding: 12px 24px; border-bottom: 1px solid var(--line); background: var(--panel); }
+header.nav .brand { font-weight: 700; letter-spacing: .3px; }
+main { max-width: 1180px; margin: 0 auto; padding: 24px; }
+h1 { font-size: 22px; margin: 0 0 4px; }
+h2 { font-size: 16px; margin: 24px 0 8px; }
+.sub { color: var(--muted); margin-bottom: 16px; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+.grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.stat { font-size: 22px; font-weight: 700; }
+.stat small { display: block; font-size: 12px; color: var(--muted); font-weight: 400; }
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--line); }
+th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.badge { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: 12px; border: 1px solid var(--line); }
+.badge.ok { color: var(--ok); border-color: var(--ok); }
+.badge.bad { color: var(--bad); border-color: var(--bad); }
+.badge.plat { color: var(--accent); border-color: var(--accent); }
+.mono { font-family: ui-monospace, Consolas, monospace; font-size: 12px; word-break: break-all; }
+canvas { width: 100%; max-width: 1100px; background: #0b0f14; border: 1px solid var(--line); border-radius: 8px; display: block; }
+.controls { display: flex; gap: 12px; align-items: center; margin-top: 8px; }
+.controls input[type=range] { flex: 1; }
+button { background: var(--accent); color: #04121f; border: 0; border-radius: 6px; padding: 6px 14px; font-weight: 600; cursor: pointer; }
+.card.hit { border: 2px solid var(--bad); }
+.card.hit h2 { color: var(--bad); margin-top: 0; }
+.card.clean { border: 2px solid var(--ok); }
+.err { color: var(--bad); }
+.scroll { max-height: 420px; overflow: auto; }

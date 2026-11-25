@@ -1,0 +1,19 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.16, pytest-9.2.0, pluggy-1.7.0 -- /opt/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /work
+configfile: pyproject.toml
+testpaths: tests
+collecting ... collected 8 items
+
+tests/test_simeval.py::test_bindings_engine_run PASSED                   [ 12%]
+tests/test_simeval.py::test_gen_scenarios PASSED                         [ 25%]
+tests/test_simeval.py::test_run_produces_finite_metrics PASSED           [ 37%]
+tests/test_simeval.py::test_batch_writes_index PASSED                    [ 50%]
+tests/test_simeval.py::test_bench_scaling_digests_identical PASSED       [ 62%]
+tests/test_simeval.py::test_repro_check_is_reproducible PASSED           [ 75%]
+tests/test_simeval.py::test_diff_names_vehicle_model PASSED              [ 87%]
+tests/test_simeval.py::test_profile_writes_chrome_trace PASSED           [100%]
+
+----- generated xml file: /work/proof/phase1-local/tests/pytest-junit.xml ------
+============================== 8 passed in 11.63s ==============================

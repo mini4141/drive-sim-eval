@@ -1,0 +1,12 @@
+
+ RUN  v5.1.1 C:/Users/ThinkPad/Pictures/mmvie-v2/reqs/1-drive-sim-eval/viewer
+
+ ✓ src/pages/BatchPage.test.tsx (1 test) 1337ms
+   ✓ batch page renders the aggregate table from a fixture 1334ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  15:15:46
+   Duration  19.01s (environment 54%, import 28%, setup 7%, tests 7%, transform 2%)
+
+JUNIT report written to C:/Users/ThinkPad/Pictures/mmvie-v2/reqs/1-drive-sim-eval/proof/phase1-local/tests/vitest-junit.xml

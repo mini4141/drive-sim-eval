@@ -1,0 +1,10 @@
+output "region" { value = var.region }
+output "ecr_repository_url" { value = aws_ecr_repository.main.repository_url }
+output "data_bucket" { value = aws_s3_bucket.data.bucket }
+output "site_bucket" { value = aws_s3_bucket.site.bucket }
+output "cloudfront_domain" { value = aws_cloudfront_distribution.site.domain_name }
+output "cloudfront_id" { value = aws_cloudfront_distribution.site.id }
+output "job_queue" { value = aws_batch_job_queue.main.name }
+output "job_definition" { value = aws_batch_job_definition.sim.name }
+output "compute_environment" { value = aws_batch_compute_environment.fargate.name }
+output "log_group" { value = aws_cloudwatch_log_group.batch.name }

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="1" failures="0" errors="0" time="1.3374563">
+    <testsuite name="src/pages/BatchPage.test.tsx" timestamp="2026-11-25T08:16:05.666Z" hostname="DESKTOP-LSTSC86" tests="1" failures="0" errors="0" skipped="0" time="1.3374563">
+        <testcase classname="src/pages/BatchPage.test.tsx" name="batch page renders the aggregate table from a fixture" time="1.3337018">
+        </testcase>
+    </testsuite>
+</testsuites>

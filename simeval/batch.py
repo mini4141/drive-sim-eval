@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import shutil
 import tempfile
 import time
 from concurrent.futures import ProcessPoolExecutor
@@ -148,8 +149,11 @@ def bench_scaling(
     """Same batch at several worker counts; the combined digest must not change."""
     points = []
     with tempfile.TemporaryDirectory() as tmp:
+        # local copy: keeps bind-mount/network file latency out of the worker-count comparison
+        local = Path(tmp) / "scenarios"
+        shutil.copytree(scenarios_dir, local)
         for w in workers_list:
-            idx = run_batch(scenarios_dir, config_path, w, f"{batch_id}-w{w}", tmp)
+            idx = run_batch(local, config_path, w, f"{batch_id}-w{w}", Path(tmp) / "out")
             points.append(
                 {
                     "workers": w,

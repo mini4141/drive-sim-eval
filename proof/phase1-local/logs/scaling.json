@@ -1,0 +1,36 @@
+{
+  "batch_id": "local-001",
+  "n_runs": 200,
+  "cpu_count": 8,
+  "digests_identical": true,
+  "points": [
+    {
+      "workers": 1,
+      "wall_s": 12.44376171299973,
+      "runs_per_sec": 16.072310336115187,
+      "combined_digest": "c9998c385a19ad8187e18fc567096fdc05d9fdac6c3cc874031ee91148b1a97c",
+      "speedup": 1.0
+    },
+    {
+      "workers": 2,
+      "wall_s": 6.093249745999856,
+      "runs_per_sec": 32.82320737489835,
+      "combined_digest": "c9998c385a19ad8187e18fc567096fdc05d9fdac6c3cc874031ee91148b1a97c",
+      "speedup": 2.042220856148053
+    },
+    {
+      "workers": 4,
+      "wall_s": 4.064680770999985,
+      "runs_per_sec": 49.20435607807803,
+      "combined_digest": "c9998c385a19ad8187e18fc567096fdc05d9fdac6c3cc874031ee91148b1a97c",
+      "speedup": 3.061436411385965
+    },
+    {
+      "workers": 8,
+      "wall_s": 2.6527740640003685,
+      "runs_per_sec": 75.39277570378576,
+      "combined_digest": "c9998c385a19ad8187e18fc567096fdc05d9fdac6c3cc874031ee91148b1a97c",
+      "speedup": 4.690848678697728
+    }
+  ]
+}

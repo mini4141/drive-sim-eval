@@ -1,0 +1,8 @@
+            count  total_us  mean_us  p95_us
+tick          354   4772.78    13.48   17.50
+sensor        354    929.12     2.62    4.80
+policy        354    709.07     2.00    2.70
+router          1    148.54   148.54  148.54
+vehicle       354     55.02     0.16    0.30
+controller    354     49.62     0.14    0.30
+{"ts": "2026-11-25T08:12:43.595Z", "level": "info", "logger": "simeval", "event": "profile_written", "trace": "results/demo/s0002_car_closed_loop.trace.json", "summary": "results/demo/s0002_car_closed_loop.profile.json", "note": "trace.json opens in Perfetto: https://ui.perfetto.dev"}

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="(empty)"
+	tests="6"
+	failures="0"
+	disabled="0"
+	skipped="0"
+	hostname=""
+	time="0"
+	timestamp="2026-11-25T07:39:48"
+	>
+	<testcase name="SensorModel.ObservationShapeAndValues" classname="SensorModel.ObservationShapeAndValues" time="0.0105482" status="run">
+		<properties/>
+		<system-out>Running main() from ./googletest/src/gtest_main.cc
+Note: Google Test filter = SensorModel.ObservationShapeAndValues
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from SensorModel
+[ RUN      ] SensorModel.ObservationShapeAndValues
+[       OK ] SensorModel.ObservationShapeAndValues (0 ms)
+[----------] 1 test from SensorModel (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="MlpPolicy.ForwardMatchesKnownVector" classname="MlpPolicy.ForwardMatchesKnownVector" time="0.00437163" status="run">
+		<properties/>
+		<system-out>Running main() from ./googletest/src/gtest_main.cc
+Note: Google Test filter = MlpPolicy.ForwardMatchesKnownVector
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from MlpPolicy
+[ RUN      ] MlpPolicy.ForwardMatchesKnownVector
+[       OK ] MlpPolicy.ForwardMatchesKnownVector (0 ms)
+[----------] 1 test from MlpPolicy (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="AStarRouter.FindsShortestRoute" classname="AStarRouter.FindsShortestRoute" time="0.00972858" status="run">
+		<properties/>
+		<system-out>Running main() from ./googletest/src/gtest_main.cc
+Note: Google Test filter = AStarRouter.FindsShortestRoute
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from AStarRouter
+[ RUN      ] AStarRouter.FindsShortestRoute
+[       OK ] AStarRouter.FindsShortestRoute (0 ms)
+[----------] 1 test from AStarRouter (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="PidController.AcceleratesTowardsTargetSpeed" classname="PidController.AcceleratesTowardsTargetSpeed" time="0.00620903" status="run">
+		<properties/>
+		<system-out>Running main() from ./googletest/src/gtest_main.cc
+Note: Google Test filter = PidController.AcceleratesTowardsTargetSpeed
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from PidController
+[ RUN      ] PidController.AcceleratesTowardsTargetSpeed
+[       OK ] PidController.AcceleratesTowardsTargetSpeed (0 ms)
+[----------] 1 test from PidController (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="KinematicBicycle.IntegratesStraightLine" classname="KinematicBicycle.IntegratesStraightLine" time="0.0143085" status="run">
+		<properties/>
+		<system-out>Running main() from ./googletest/src/gtest_main.cc
+Note: Google Test filter = KinematicBicycle.IntegratesStraightLine
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from KinematicBicycle
+[ RUN      ] KinematicBicycle.IntegratesStraightLine
+[       OK ] KinematicBicycle.IntegratesStraightLine (0 ms)
+[----------] 1 test from KinematicBicycle (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+	<testcase name="Engine.DigestIsDeterministic" classname="Engine.DigestIsDeterministic" time="0.0182116" status="run">
+		<properties/>
+		<system-out>Running main() from ./googletest/src/gtest_main.cc
+Note: Google Test filter = Engine.DigestIsDeterministic
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from Engine
+[ RUN      ] Engine.DigestIsDeterministic
+[       OK ] Engine.DigestIsDeterministic (13 ms)
+[----------] 1 test from Engine (13 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (13 ms total)
+[  PASSED  ] 1 test.
+</system-out>
+	</testcase>
+</testsuite>
