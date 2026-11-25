@@ -65,9 +65,9 @@ Resume rule: read this file first, continue at the first unticked item.
 ## Phase 2 proof (`proof/phase2-cloud/`)
 - [ ] logs/batch-describe-jobs.json (array job SUCCEEDED, 20/20 children, redacted)
 - [ ] logs/cloudwatch-sample.log
-- [x] screenshots/01-cloud-batch-overview.png
-- [x] screenshots/02-cloud-run-replay.png
-- [x] screenshots/03-cloud-diff.png
+- [ ] screenshots/01-cloud-batch-overview.png
+- [ ] screenshots/02-cloud-run-replay.png
+- [ ] screenshots/03-cloud-diff.png
 - [ ] tests/playwright-cloud/
 - [ ] resources.txt
 

@@ -8,3 +8,4 @@ One line each: date, decision, reason.
 - 2026-11-25 | Pipeline config `components.vehicle: log_replay` and `controller: log_replay` implement open-loop and the diff replay inside the one engine loop | Keeps a single code path as required by CLAUDE.md §11.
 - 2026-11-25 | Trajectory rows are `[x,y,yaw,v,steer,accel]` arrays, state at tick start plus the command issued at that tick | Compact JSON; digest is SHA-256 of that canonical array.
 - 2026-11-25 | One S3 `site` bucket holds the viewer and `results/`; a second `data` bucket holds scenarios | CloudFront OAC serves the site bucket only; scenarios stay private.
+- 2026-11-25 | viewer devDependencies pin @emnapi/core and @emnapi/runtime 2.0.0-beta.2 | The Windows-generated npm lockfile omitted them (optional peers of the rolldown wasm runtime), which made `npm ci` fail on Linux CI.
