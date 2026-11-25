@@ -5,9 +5,9 @@ Resume rule: read this file first, continue at the first unticked item.
 ## Phases
 - [x] Phase 0: scaffold
 - [x] Phase 1: local build + proof
-- [ ] Phase 2: AWS showcase + proof
-- [ ] Phase 3: destroy + verify
-- [ ] Phase 4: write-up
+- [x] Phase 2: AWS showcase + proof
+- [x] Phase 3: destroy + verify
+- [x] Phase 4: write-up
 
 ## Requirement coverage (SPECS §2)
 - [x] Modern C++ and Python in a shared codebase: `core/` + `simeval/` via pybind11 (ctest + pytest reports)
@@ -29,7 +29,7 @@ Resume rule: read this file first, continue at the first unticked item.
 - [x] JSON logs, per-run metrics JSON, interface trace records
 - [x] React 19 + TS + Vite, Recharts, canvas replay, Vitest + RTL, Playwright
 - [x] Docker multi-stage (C++ build -> wheel -> slim runtime)
-- [ ] AWS: ECR, Batch (Fargate CE, queue, array job def), S3, S3+CloudFront, CloudWatch Logs, IAM
+- [x] AWS: ECR, Batch (Fargate CE, queue, array job def), S3, S3+CloudFront, CloudWatch Logs, IAM
 - [x] Terraform >= 1.9 (AWS provider 6.x), GitHub Actions CI
 - [x] `docs/AI_USAGE.md`
 
@@ -41,7 +41,7 @@ Resume rule: read this file first, continue at the first unticked item.
 - [x] F5 profiling
 - [x] F6 platforms car|van|robot
 - [x] F7 viewer pages (/, batch, run, diff, profile, repro)
-- [ ] F8 cloud fan-out
+- [x] F8 cloud fan-out
 
 ## Phase 1 proof (`proof/phase1-local/`)
 - [x] tests/: ctest JUnit XML
@@ -63,22 +63,25 @@ Resume rule: read this file first, continue at the first unticked item.
 - [x] proof/README.md index complete
 
 ## Phase 2 proof (`proof/phase2-cloud/`)
-- [ ] logs/batch-describe-jobs.json (array job SUCCEEDED, 20/20 children, redacted)
-- [ ] logs/cloudwatch-sample.log
-- [ ] screenshots/01-cloud-batch-overview.png
-- [ ] screenshots/02-cloud-run-replay.png
-- [ ] screenshots/03-cloud-diff.png
-- [ ] tests/playwright-cloud/
-- [ ] resources.txt
+- [x] logs/batch-describe-jobs.json (array job SUCCEEDED, 20/20 children, redacted)
+- [x] logs/cloudwatch-sample.log
+- [x] screenshots/01-cloud-batch-overview.png
+- [x] screenshots/02-cloud-run-replay.png
+- [x] screenshots/03-cloud-diff.png
+- [x] tests/playwright-cloud/
+- [x] resources.txt
 
 ## Phase 3 (`proof/phase3-destroy/`)
-- [ ] `scripts/destroy.sh` run
-- [ ] `verify-destroyed.txt` shows nothing billable
+- [x] `scripts/destroy.sh` run
+- [x] `verify-destroyed.txt` shows nothing billable
 
 ## Phase 4
-- [ ] `docs/PORTFOLIO.md`
-- [ ] `README.md` current (diagram, quickstart, deploy/destroy, badge, links)
-- [ ] everything committed and pushed
+- [x] `docs/PORTFOLIO.md`
+- [x] `README.md` current (diagram, quickstart, deploy/destroy, badge, links)
+- [x] everything committed and pushed
 
 ## Notes
 - Phase 1 complete 2026-11-25T08:39:56Z: CI green (4 jobs), test-all green, proof/phase1-local complete. Phase 2 started.
+
+- Phase 2/3 done 2026-11-25: deployed (S3 website instead of CloudFront, account not verified), 20/20 children + aggregate SUCCEEDED, destroyed, verify-destroyed exit 0.
+- Note: a stray folder C:\c\Users\... was created by an early capture run (wrong path); safe to delete.

@@ -1,0 +1,814 @@
+== 1/4 cancel and terminate Batch jobs
+== 2/4 disable and delete the job queue, then the compute environment
+== 3/4 empty the buckets and the ECR repository
+{
+    "BucketArn": "arn:aws:s3:::drive-sim-eval-data-<ACCOUNT_ID>",
+    "BucketRegion": "ap-southeast-2",
+    "AccessPointAlias": false
+}
+{
+    "BucketArn": "arn:aws:s3:::drive-sim-eval-site-<ACCOUNT_ID>",
+    "BucketRegion": "ap-southeast-2",
+    "AccessPointAlias": false
+}
+== 4/4 terraform destroy
+data.aws_availability_zones.available: Reading...
+data.aws_iam_policy_document.assume_batch: Reading...
+data.aws_iam_policy_document.assume_ecs_tasks: Reading...
+data.aws_caller_identity.current: Reading...
+data.aws_iam_policy_document.assume_batch: Read complete after 0s [id=958374824]
+data.aws_iam_policy_document.assume_ecs_tasks: Read complete after 0s [id=1077804475]
+aws_cloudwatch_log_group.batch: Refreshing state... [id=/aws/batch/drive-sim-eval]
+aws_vpc.main: Refreshing state... [id=vpc-05aec448fc4115c97]
+aws_ecr_repository.main: Refreshing state... [id=drive-sim-eval]
+aws_iam_role.batch_service: Refreshing state... [id=drive-sim-eval-batch-service]
+aws_iam_role.execution: Refreshing state... [id=drive-sim-eval-batch-execution]
+aws_iam_role.job: Refreshing state... [id=drive-sim-eval-batch-job]
+data.aws_caller_identity.current: Read complete after 0s [id=<ACCOUNT_ID>]
+aws_s3_bucket.site: Refreshing state... [id=drive-sim-eval-site-<ACCOUNT_ID>]
+aws_s3_bucket.data: Refreshing state... [id=drive-sim-eval-data-<ACCOUNT_ID>]
+data.aws_availability_zones.available: Read complete after 2s [id=ap-southeast-2]
+aws_iam_role_policy_attachment.execution: Refreshing state... [id=drive-sim-eval-batch-execution/arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy]
+aws_iam_role_policy_attachment.batch_service: Refreshing state... [id=drive-sim-eval-batch-service/arn:aws:iam::aws:policy/service-role/AWSBatchServiceRole]
+aws_batch_job_definition.sim: Refreshing state... [id=arn:aws:batch:ap-southeast-2:<ACCOUNT_ID>:job-definition/drive-sim-eval-job:1]
+aws_internet_gateway.main: Refreshing state... [id=igw-0fd8d649404737fac]
+aws_subnet.public[1]: Refreshing state... [id=subnet-088cba971c890d5dc]
+aws_security_group.batch: Refreshing state... [id=sg-076d87159d47ce27c]
+aws_subnet.public[0]: Refreshing state... [id=subnet-0a01862e5bf839470]
+aws_route_table.public: Refreshing state... [id=rtb-0e4db9bc60b9a171b]
+aws_batch_compute_environment.fargate: Refreshing state... [id=drive-sim-eval-fargate]
+aws_s3_bucket_public_access_block.data: Refreshing state... [id=drive-sim-eval-data-<ACCOUNT_ID>]
+aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-0e0d68a39b029bab3]
+aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-0b<ACCOUNT_ID>92f]
+aws_batch_job_queue.main: Refreshing state... [id=arn:aws:batch:ap-southeast-2:<ACCOUNT_ID>:job-queue/drive-sim-eval-queue]
+aws_s3_bucket_public_access_block.site: Refreshing state... [id=drive-sim-eval-site-<ACCOUNT_ID>]
+aws_s3_bucket_website_configuration.site: Refreshing state... [id=drive-sim-eval-site-<ACCOUNT_ID>]
+data.aws_iam_policy_document.site_public_read: Reading...
+data.aws_iam_policy_document.job: Reading...
+data.aws_iam_policy_document.site_public_read: Read complete after 0s [id=2964309225]
+data.aws_iam_policy_document.job: Read complete after 0s [id=2443659624]
+aws_iam_role_policy.job: Refreshing state... [id=drive-sim-eval-batch-job:s3-scenarios-and-results]
+aws_s3_bucket_policy.site: Refreshing state... [id=drive-sim-eval-site-<ACCOUNT_ID>]
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # aws_batch_job_definition.sim will be destroyed
+  - resource "aws_batch_job_definition" "sim" {
+      - arn                        = "arn:aws:batch:ap-southeast-2:<ACCOUNT_ID>:job-definition/drive-sim-eval-job:1" -> null
+      - arn_prefix                 = "arn:aws:batch:ap-southeast-2:<ACCOUNT_ID>:job-definition/drive-sim-eval-job" -> null
+      - container_properties       = jsonencode(
+            {
+              - command                      = [
+                  - "--help",
+                ]
+              - environment                  = [
+                  - {
+                      - name  = "AWS_REGION"
+                      - value = "ap-southeast-2"
+                    },
+                ]
+              - executionRoleArn             = "arn:aws:iam::<ACCOUNT_ID>:role/drive-sim-eval-batch-execution"
+              - fargatePlatformConfiguration = {
+                  - platformVersion = "LATEST"
+                }
+              - image                        = "<ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/drive-sim-eval:latest"
+              - jobRoleArn                   = "arn:aws:iam::<ACCOUNT_ID>:role/drive-sim-eval-batch-job"
+              - logConfiguration             = {
+                  - logDriver     = "awslogs"
+                  - options       = {
+                      - awslogs-group         = "/aws/batch/drive-sim-eval"
+                      - awslogs-region        = "ap-southeast-2"
+                      - awslogs-stream-prefix = "sim"
+                    }
+                  - secretOptions = []
+                }
+              - mountPoints                  = []
+              - networkConfiguration         = {
+                  - assignPublicIp = "ENABLED"
+                }
+              - resourceRequirements         = [
+                  - {
+                      - type  = "VCPU"
+                      - value = "1"
+                    },
+                  - {
+                      - type  = "MEMORY"
+                      - value = "2048"
+                    },
+                ]
+              - runtimePlatform              = {
+                  - cpuArchitecture       = "X86_64"
+                  - operatingSystemFamily = "LINUX"
+                }
+              - secrets                      = []
+              - ulimits                      = []
+              - volumes                      = []
+            }
+        ) -> null
+      - deregister_on_new_revision = true -> null
+      - id                         = "arn:aws:batch:ap-southeast-2:<ACCOUNT_ID>:job-definition/drive-sim-eval-job:1" -> null
+      - name                       = "drive-sim-eval-job" -> null
+      - parameters                 = {} -> null
+      - platform_capabilities      = [
+          - "FARGATE",
+        ] -> null
+      - propagate_tags             = false -> null
+      - region                     = "ap-southeast-2" -> null
+      - revision                   = 1 -> null
+      - scheduling_priority        = 0 -> null
+      - tags                       = {} -> null
+      - tags_all                   = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "drive-sim-eval"
+        } -> null
+      - type                       = "container" -> null
+        # (2 unchanged attributes hidden)
+    }
+
+  # aws_cloudwatch_log_group.batch will be destroyed
+  - resource "aws_cloudwatch_log_group" "batch" {
+      - arn                         = "arn:aws:logs:ap-southeast-2:<ACCOUNT_ID>:log-group:/aws/batch/drive-sim-eval" -> null
+      - deletion_protection_enabled = false -> null
+      - id                          = "/aws/batch/drive-sim-eval" -> null
+      - log_group_class             = "STANDARD" -> null
+      - name                        = "/aws/batch/drive-sim-eval" -> null
+      - region                      = "ap-southeast-2" -> null
+      - retention_in_days           = 1 -> null
+      - skip_destroy                = false -> null
+      - tags                        = {} -> null
+      - tags_all                    = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "drive-sim-eval"
+        } -> null
+        # (2 unchanged attributes hidden)
+    }
+
+  # aws_ecr_repository.main will be destroyed
+  - resource "aws_ecr_repository" "main" {
+      - arn                  = "arn:aws:ecr:ap-southeast-2:<ACCOUNT_ID>:repository/drive-sim-eval" -> null
+      - force_delete         = true -> null
+      - id                   = "drive-sim-eval" -> null
+      - image_tag_mutability = "MUTABLE" -> null
+      - name                 = "drive-sim-eval" -> null
+      - region               = "ap-southeast-2" -> null
+      - registry_id          = "<ACCOUNT_ID>" -> null
+      - repository_url       = "<ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/drive-sim-eval" -> null
+      - tags                 = {} -> null
+      - tags_all             = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "drive-sim-eval"
+        } -> null
+
+      - encryption_configuration {
+          - encryption_type = "AES256" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - image_scanning_configuration {
+          - scan_on_push = false -> null
+        }
+    }
+
+  # aws_iam_role.batch_service will be destroyed
+  - resource "aws_iam_role" "batch_service" {
+      - arn                   = "arn:aws:iam::<ACCOUNT_ID>:role/drive-sim-eval-batch-service" -> null
+      - assume_role_policy    = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action    = "sts:AssumeRole"
+                      - Effect    = "Allow"
+                      - Principal = {
+                          - Service = "batch.amazonaws.com"
+                        }
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - create_date           = "2026-11-25T08:40:48Z" -> null
+      - force_detach_policies = false -> null
+      - id                    = "drive-sim-eval-batch-service" -> null
+      - managed_policy_arns   = [
+          - "arn:aws:iam::aws:policy/service-role/AWSBatchServiceRole",
+        ] -> null
+      - max_session_duration  = 3600 -> null
+      - name                  = "drive-sim-eval-batch-service" -> null
+      - path                  = "/" -> null
+      - tags                  = {} -> null
+      - tags_all              = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "drive-sim-eval"
+        } -> null
+      - unique_id             = "AROA4WK46YHDCSGJPLQUD" -> null
+        # (3 unchanged attributes hidden)
+    }
+
+  # aws_iam_role.execution will be destroyed
+  - resource "aws_iam_role" "execution" {
+      - arn                   = "arn:aws:iam::<ACCOUNT_ID>:role/drive-sim-eval-batch-execution" -> null
+      - assume_role_policy    = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action    = "sts:AssumeRole"
+                      - Effect    = "Allow"
+                      - Principal = {
+                          - Service = "ecs-tasks.amazonaws.com"
+                        }
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - create_date           = "2026-11-25T08:40:48Z" -> null
+      - force_detach_policies = false -> null
+      - id                    = "drive-sim-eval-batch-execution" -> null
+      - managed_policy_arns   = [
+          - "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
+        ] -> null
+      - max_session_duration  = 3600 -> null
+      - name                  = "drive-sim-eval-batch-execution" -> null
+      - path                  = "/" -> null
+      - tags                  = {} -> null
+      - tags_all              = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "drive-sim-eval"
+        } -> null
+      - unique_id             = "AROA4WK46YHDEBRKT4STA" -> null
+        # (3 unchanged attributes hidden)
+    }
+
+  # aws_iam_role.job will be destroyed
+  - resource "aws_iam_role" "job" {
+      - arn                   = "arn:aws:iam::<ACCOUNT_ID>:role/drive-sim-eval-batch-job" -> null
+      - assume_role_policy    = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action    = "sts:AssumeRole"
+                      - Effect    = "Allow"
+                      - Principal = {
+                          - Service = "ecs-tasks.amazonaws.com"
+                        }
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - create_date           = "2026-11-25T08:40:48Z" -> null
+      - force_detach_policies = false -> null
+      - id                    = "drive-sim-eval-batch-job" -> null
+      - managed_policy_arns   = [] -> null
+      - max_session_duration  = 3600 -> null
+      - name                  = "drive-sim-eval-batch-job" -> null
+      - path                  = "/" -> null
+      - tags                  = {} -> null
+      - tags_all              = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "drive-sim-eval"
+        } -> null
+      - unique_id             = "AROA4WK46YHDGJ25CKIEZ" -> null
+        # (3 unchanged attributes hidden)
+
+      - inline_policy {
+          - name   = "s3-scenarios-and-results" -> null
+          - policy = jsonencode(
+                {
+                  - Statement = [
+                      - {
+                          - Action   = "s3:ListBucket"
+                          - Effect   = "Allow"
+                          - Resource = [
+                              - "arn:aws:s3:::drive-sim-eval-site-<ACCOUNT_ID>",
+                              - "arn:aws:s3:::drive-sim-eval-data-<ACCOUNT_ID>",
+                            ]
+                        },
+                      - {
+                          - Action   = "s3:GetObject"
+                          - Effect   = "Allow"
+                          - Resource = [
+                              - "arn:aws:s3:::drive-sim-eval-site-<ACCOUNT_ID>/results/*",
+                              - "arn:aws:s3:::drive-sim-eval-data-<ACCOUNT_ID>/*",
+                            ]
+                        },
+                      - {
+                          - Action   = "s3:PutObject"
+                          - Effect   = "Allow"
+                          - Resource = "arn:aws:s3:::drive-sim-eval-site-<ACCOUNT_ID>/results/*"
+                        },
+                    ]
+                  - Version   = "2012-10-17"
+                }
+            ) -> null
+        }
+    }
+
+  # aws_iam_role_policy.job will be destroyed
+  - resource "aws_iam_role_policy" "job" {
+      - id          = "drive-sim-eval-batch-job:s3-scenarios-and-results" -> null
+      - name        = "s3-scenarios-and-results" -> null
+      - policy      = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action   = "s3:ListBucket"
+                      - Effect   = "Allow"
+                      - Resource = [
+                          - "arn:aws:s3:::drive-sim-eval-site-<ACCOUNT_ID>",
+                          - "arn:aws:s3:::drive-sim-eval-data-<ACCOUNT_ID>",
+                        ]
+                    },
+                  - {
+                      - Action   = "s3:GetObject"
+                      - Effect   = "Allow"
+                      - Resource = [
+                          - "arn:aws:s3:::drive-sim-eval-site-<ACCOUNT_ID>/results/*",
+                          - "arn:aws:s3:::drive-sim-eval-data-<ACCOUNT_ID>/*",
+                        ]
+                    },
+                  - {
+                      - Action   = "s3:PutObject"
+                      - Effect   = "Allow"
+                      - Resource = "arn:aws:s3:::drive-sim-eval-site-<ACCOUNT_ID>/results/*"
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - role        = "drive-sim-eval-batch-job" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # aws_iam_role_policy_attachment.batch_service will be destroyed
+  - resource "aws_iam_role_policy_attachment" "batch_service" {
+      - id         = "drive-sim-eval-batch-service/arn:aws:iam::aws:policy/service-role/AWSBatchServiceRole" -> null
+      - policy_arn = "arn:aws:iam::aws:policy/service-role/AWSBatchServiceRole" -> null
+      - role       = "drive-sim-eval-batch-service" -> null
+    }
+
+  # aws_iam_role_policy_attachment.execution will be destroyed
+  - resource "aws_iam_role_policy_attachment" "execution" {
+      - id         = "drive-sim-eval-batch-execution/arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy" -> null
+      - policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy" -> null
+      - role       = "drive-sim-eval-batch-execution" -> null
+    }
+
+  # aws_internet_gateway.main will be destroyed
+  - resource "aws_internet_gateway" "main" {
+      - arn      = "arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:internet-gateway/igw-0fd8d649404737fac" -> null
+      - id       = "igw-0fd8d649404737fac" -> null
+      - owner_id = "<ACCOUNT_ID>" -> null
+      - region   = "ap-southeast-2" -> null
+      - tags     = {
+          - "Name" = "drive-sim-eval-igw"
+        } -> null
+      - tags_all = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Name"      = "drive-sim-eval-igw"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "drive-sim-eval"
+        } -> null
+      - vpc_id   = "vpc-05aec448fc4115c97" -> null
+    }
+
+  # aws_route_table.public will be destroyed
+  - resource "aws_route_table" "public" {
+      - arn              = "arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:route-table/rtb-0e4db9bc60b9a171b" -> null
+      - id               = "rtb-0e4db9bc60b9a171b" -> null
+      - owner_id         = "<ACCOUNT_ID>" -> null
+      - propagating_vgws = [] -> null
+      - region           = "ap-southeast-2" -> null
+      - route            = [
+          - {
+              - cidr_block                 = "0.0.0.0/0"
+              - gateway_id                 = "igw-0fd8d649404737fac"
+                # (12 unchanged attributes hidden)
+            },
+        ] -> null
+      - tags             = {
+          - "Name" = "drive-sim-eval-public"
+        } -> null
+      - tags_all         = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Name"      = "drive-sim-eval-public"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "drive-sim-eval"
+        } -> null
+      - vpc_id           = "vpc-05aec448fc4115c97" -> null
+    }
+
+  # aws_route_table_association.public[0] will be destroyed
+  - resource "aws_route_table_association" "public" {
+      - id             = "rtbassoc-0b<ACCOUNT_ID>92f" -> null
+      - region         = "ap-southeast-2" -> null
+      - route_table_id = "rtb-0e4db9bc60b9a171b" -> null
+      - subnet_id      = "subnet-0a01862e5bf839470" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # aws_route_table_association.public[1] will be destroyed
+  - resource "aws_route_table_association" "public" {
+      - id             = "rtbassoc-0e0d68a39b029bab3" -> null
+      - region         = "ap-southeast-2" -> null
+      - route_table_id = "rtb-0e4db9bc60b9a171b" -> null
+      - subnet_id      = "subnet-088cba971c890d5dc" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # aws_s3_bucket.data will be destroyed
+  - resource "aws_s3_bucket" "data" {
+      - arn                         = "arn:aws:s3:::drive-sim-eval-data-<ACCOUNT_ID>" -> null
+      - bucket                      = "drive-sim-eval-data-<ACCOUNT_ID>" -> null
+      - bucket_domain_name          = "drive-sim-eval-data-<ACCOUNT_ID>.s3.amazonaws.com" -> null
+      - bucket_namespace            = "global" -> null
+      - bucket_region               = "ap-southeast-2" -> null
+      - bucket_regional_domain_name = "drive-sim-eval-data-<ACCOUNT_ID>.s3.ap-southeast-2.amazonaws.com" -> null
+      - force_destroy               = true -> null
+      - hosted_zone_id              = "Z1WCIGYICN2BYD" -> null
+      - id                          = "drive-sim-eval-data-<ACCOUNT_ID>" -> null
+      - object_lock_enabled         = false -> null
+      - region                      = "ap-southeast-2" -> null
+      - request_payer               = "BucketOwner" -> null
+      - tags                        = {} -> null
+      - tags_all                    = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "drive-sim-eval"
+        } -> null
+        # (3 unchanged attributes hidden)
+
+      - grant {
+          - id          = "6b5864cb9c0aed031581ddeea8d487ed1b880fe796863b22cb4a1f9d259a8f87" -> null
+          - permissions = [
+              - "FULL_CONTROL",
+            ] -> null
+          - type        = "CanonicalUser" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - server_side_encryption_configuration {
+          - rule {
+              - bucket_key_enabled = false -> null
+
+              - apply_server_side_encryption_by_default {
+                  - sse_algorithm     = "AES256" -> null
+                    # (1 unchanged attribute hidden)
+                }
+            }
+        }
+
+      - versioning {
+          - enabled    = false -> null
+          - mfa_delete = false -> null
+        }
+    }
+
+  # aws_s3_bucket.site will be destroyed
+  - resource "aws_s3_bucket" "site" {
+      - arn                         = "arn:aws:s3:::drive-sim-eval-site-<ACCOUNT_ID>" -> null
+      - bucket                      = "drive-sim-eval-site-<ACCOUNT_ID>" -> null
+      - bucket_domain_name          = "drive-sim-eval-site-<ACCOUNT_ID>.s3.amazonaws.com" -> null
+      - bucket_namespace            = "global" -> null
+      - bucket_region               = "ap-southeast-2" -> null
+      - bucket_regional_domain_name = "drive-sim-eval-site-<ACCOUNT_ID>.s3.ap-southeast-2.amazonaws.com" -> null
+      - force_destroy               = true -> null
+      - hosted_zone_id              = "Z1WCIGYICN2BYD" -> null
+      - id                          = "drive-sim-eval-site-<ACCOUNT_ID>" -> null
+      - object_lock_enabled         = false -> null
+      - policy                      = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action    = "s3:GetObject"
+                      - Effect    = "Allow"
+                      - Principal = "*"
+                      - Resource  = "arn:aws:s3:::drive-sim-eval-site-<ACCOUNT_ID>/*"
+                      - Sid       = "PublicRead"
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - region                      = "ap-southeast-2" -> null
+      - request_payer               = "BucketOwner" -> null
+      - tags                        = {} -> null
+      - tags_all                    = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "drive-sim-eval"
+        } -> null
+      - website_domain              = "s3-website-ap-southeast-2.amazonaws.com" -> null
+      - website_endpoint            = "drive-sim-eval-site-<ACCOUNT_ID>.s3-website-ap-southeast-2.amazonaws.com" -> null
+        # (2 unchanged attributes hidden)
+
+      - grant {
+          - id          = "6b5864cb9c0aed031581ddeea8d487ed1b880fe796863b22cb4a1f9d259a8f87" -> null
+          - permissions = [
+              - "FULL_CONTROL",
+            ] -> null
+          - type        = "CanonicalUser" -> null
+            # (1 unchanged attribute hidden)
+        }
+
+      - server_side_encryption_configuration {
+          - rule {
+              - bucket_key_enabled = false -> null
+
+              - apply_server_side_encryption_by_default {
+                  - sse_algorithm     = "AES256" -> null
+                    # (1 unchanged attribute hidden)
+                }
+            }
+        }
+
+      - versioning {
+          - enabled    = false -> null
+          - mfa_delete = false -> null
+        }
+
+      - website {
+          - error_document           = "index.html" -> null
+          - index_document           = "index.html" -> null
+            # (2 unchanged attributes hidden)
+        }
+    }
+
+  # aws_s3_bucket_policy.site will be destroyed
+  - resource "aws_s3_bucket_policy" "site" {
+      - bucket = "drive-sim-eval-site-<ACCOUNT_ID>" -> null
+      - id     = "drive-sim-eval-site-<ACCOUNT_ID>" -> null
+      - policy = jsonencode(
+            {
+              - Statement = [
+                  - {
+                      - Action    = "s3:GetObject"
+                      - Effect    = "Allow"
+                      - Principal = "*"
+                      - Resource  = "arn:aws:s3:::drive-sim-eval-site-<ACCOUNT_ID>/*"
+                      - Sid       = "PublicRead"
+                    },
+                ]
+              - Version   = "2012-10-17"
+            }
+        ) -> null
+      - region = "ap-southeast-2" -> null
+    }
+
+  # aws_s3_bucket_public_access_block.data will be destroyed
+  - resource "aws_s3_bucket_public_access_block" "data" {
+      - block_public_acls       = true -> null
+      - block_public_policy     = true -> null
+      - bucket                  = "drive-sim-eval-data-<ACCOUNT_ID>" -> null
+      - id                      = "drive-sim-eval-data-<ACCOUNT_ID>" -> null
+      - ignore_public_acls      = true -> null
+      - region                  = "ap-southeast-2" -> null
+      - restrict_public_buckets = true -> null
+    }
+
+  # aws_s3_bucket_public_access_block.site will be destroyed
+  - resource "aws_s3_bucket_public_access_block" "site" {
+      - block_public_acls       = true -> null
+      - block_public_policy     = false -> null
+      - bucket                  = "drive-sim-eval-site-<ACCOUNT_ID>" -> null
+      - id                      = "drive-sim-eval-site-<ACCOUNT_ID>" -> null
+      - ignore_public_acls      = true -> null
+      - region                  = "ap-southeast-2" -> null
+      - restrict_public_buckets = false -> null
+    }
+
+  # aws_s3_bucket_website_configuration.site will be destroyed
+  - resource "aws_s3_bucket_website_configuration" "site" {
+      - bucket                = "drive-sim-eval-site-<ACCOUNT_ID>" -> null
+      - id                    = "drive-sim-eval-site-<ACCOUNT_ID>" -> null
+      - region                = "ap-southeast-2" -> null
+      - website_domain        = "s3-website-ap-southeast-2.amazonaws.com" -> null
+      - website_endpoint      = "drive-sim-eval-site-<ACCOUNT_ID>.s3-website-ap-southeast-2.amazonaws.com" -> null
+        # (2 unchanged attributes hidden)
+
+      - error_document {
+          - key = "index.html" -> null
+        }
+
+      - index_document {
+          - suffix = "index.html" -> null
+        }
+    }
+
+  # aws_security_group.batch will be destroyed
+  - resource "aws_security_group" "batch" {
+      - arn                    = "arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:security-group/sg-076d87159d47ce27c" -> null
+      - description            = "AWS Batch Fargate tasks: egress only" -> null
+      - egress                 = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - from_port        = 0
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "-1"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 0
+                # (1 unchanged attribute hidden)
+            },
+        ] -> null
+      - id                     = "sg-076d87159d47ce27c" -> null
+      - ingress                = [] -> null
+      - name                   = "drive-sim-eval-batch" -> null
+      - owner_id               = "<ACCOUNT_ID>" -> null
+      - region                 = "ap-southeast-2" -> null
+      - revoke_rules_on_delete = false -> null
+      - tags                   = {
+          - "Name" = "drive-sim-eval-batch"
+        } -> null
+      - tags_all               = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Name"      = "drive-sim-eval-batch"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "drive-sim-eval"
+        } -> null
+      - vpc_id                 = "vpc-05aec448fc4115c97" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # aws_subnet.public[0] will be destroyed
+  - resource "aws_subnet" "public" {
+      - arn                                            = "arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:subnet/subnet-0a01862e5bf839470" -> null
+      - assign_ipv6_address_on_creation                = false -> null
+      - availability_zone                              = "ap-southeast-2a" -> null
+      - availability_zone_id                           = "apse2-az1" -> null
+      - cidr_block                                     = "10.20.0.0/24" -> null
+      - enable_dns64                                   = false -> null
+      - enable_lni_at_device_index                     = 0 -> null
+      - enable_resource_name_dns_a_record_on_launch    = false -> null
+      - enable_resource_name_dns_aaaa_record_on_launch = false -> null
+      - id                                             = "subnet-0a01862e5bf839470" -> null
+      - ipv6_native                                    = false -> null
+      - map_customer_owned_ip_on_launch                = false -> null
+      - map_public_ip_on_launch                        = true -> null
+      - owner_id                                       = "<ACCOUNT_ID>" -> null
+      - private_dns_hostname_type_on_launch            = "ip-name" -> null
+      - region                                         = "ap-southeast-2" -> null
+      - tags                                           = {
+          - "Name" = "drive-sim-eval-public-0"
+        } -> null
+      - tags_all                                       = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Name"      = "drive-sim-eval-public-0"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "drive-sim-eval"
+        } -> null
+      - vpc_id                                         = "vpc-05aec448fc4115c97" -> null
+        # (5 unchanged attributes hidden)
+    }
+
+  # aws_subnet.public[1] will be destroyed
+  - resource "aws_subnet" "public" {
+      - arn                                            = "arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:subnet/subnet-088cba971c890d5dc" -> null
+      - assign_ipv6_address_on_creation                = false -> null
+      - availability_zone                              = "ap-southeast-2b" -> null
+      - availability_zone_id                           = "apse2-az3" -> null
+      - cidr_block                                     = "10.20.1.0/24" -> null
+      - enable_dns64                                   = false -> null
+      - enable_lni_at_device_index                     = 0 -> null
+      - enable_resource_name_dns_a_record_on_launch    = false -> null
+      - enable_resource_name_dns_aaaa_record_on_launch = false -> null
+      - id                                             = "subnet-088cba971c890d5dc" -> null
+      - ipv6_native                                    = false -> null
+      - map_customer_owned_ip_on_launch                = false -> null
+      - map_public_ip_on_launch                        = true -> null
+      - owner_id                                       = "<ACCOUNT_ID>" -> null
+      - private_dns_hostname_type_on_launch            = "ip-name" -> null
+      - region                                         = "ap-southeast-2" -> null
+      - tags                                           = {
+          - "Name" = "drive-sim-eval-public-1"
+        } -> null
+      - tags_all                                       = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Name"      = "drive-sim-eval-public-1"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "drive-sim-eval"
+        } -> null
+      - vpc_id                                         = "vpc-05aec448fc4115c97" -> null
+        # (5 unchanged attributes hidden)
+    }
+
+  # aws_vpc.main will be destroyed
+  - resource "aws_vpc" "main" {
+      - arn                                  = "arn:aws:ec2:ap-southeast-2:<ACCOUNT_ID>:vpc/vpc-05aec448fc4115c97" -> null
+      - assign_generated_ipv6_cidr_block     = false -> null
+      - cidr_block                           = "10.20.0.0/16" -> null
+      - default_network_acl_id               = "acl-059f7c7e1f9160a83" -> null
+      - default_route_table_id               = "rtb-0814b47265d6c505c" -> null
+      - default_security_group_id            = "sg-021d0cca9aa203f0d" -> null
+      - dhcp_options_id                      = "dopt-0a52b10906a78e0b2" -> null
+      - enable_dns_hostnames                 = true -> null
+      - enable_dns_support                   = true -> null
+      - enable_network_address_usage_metrics = false -> null
+      - id                                   = "vpc-05aec448fc4115c97" -> null
+      - instance_tenancy                     = "default" -> null
+      - ipv6_netmask_length                  = 0 -> null
+      - main_route_table_id                  = "rtb-0814b47265d6c505c" -> null
+      - network_firewall_association         = [] -> null
+      - owner_id                             = "<ACCOUNT_ID>" -> null
+      - region                               = "ap-southeast-2" -> null
+      - tags                                 = {
+          - "Name" = "drive-sim-eval-vpc"
+        } -> null
+      - tags_all                             = {
+          - "Ephemeral" = "true"
+          - "ManagedBy" = "terraform"
+          - "Name"      = "drive-sim-eval-vpc"
+          - "Owner"     = "alvieirvansyah"
+          - "Project"   = "drive-sim-eval"
+        } -> null
+        # (4 unchanged attributes hidden)
+    }
+
+Plan: 0 to add, 0 to change, 23 to destroy.
+
+Changes to Outputs:
+  - compute_environment = "drive-sim-eval-fargate" -> null
+  - data_bucket         = "drive-sim-eval-data-<ACCOUNT_ID>" -> null
+  - ecr_repository_url  = "<ACCOUNT_ID>.dkr.ecr.ap-southeast-2.amazonaws.com/drive-sim-eval" -> null
+  - job_definition      = "drive-sim-eval-job" -> null
+  - job_queue           = "drive-sim-eval-queue" -> null
+  - log_group           = "/aws/batch/drive-sim-eval" -> null
+  - region              = "ap-southeast-2" -> null
+  - site_bucket         = "drive-sim-eval-site-<ACCOUNT_ID>" -> null
+  - site_url            = "http://drive-sim-eval-site-<ACCOUNT_ID>.s3-website-ap-southeast-2.amazonaws.com" -> null
+aws_iam_role_policy_attachment.batch_service: Destroying... [id=drive-sim-eval-batch-service/arn:aws:iam::aws:policy/service-role/AWSBatchServiceRole]
+aws_s3_bucket_public_access_block.data: Destroying... [id=drive-sim-eval-data-<ACCOUNT_ID>]
+aws_iam_role_policy_attachment.execution: Destroying... [id=drive-sim-eval-batch-execution/arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy]
+aws_route_table_association.public[0]: Destroying... [id=rtbassoc-0b<ACCOUNT_ID>92f]
+aws_route_table_association.public[1]: Destroying... [id=rtbassoc-0e0d68a39b029bab3]
+aws_s3_bucket_website_configuration.site: Destroying... [id=drive-sim-eval-site-<ACCOUNT_ID>]
+aws_security_group.batch: Destroying... [id=sg-076d87159d47ce27c]
+aws_s3_bucket_policy.site: Destroying... [id=drive-sim-eval-site-<ACCOUNT_ID>]
+aws_batch_job_definition.sim: Destroying... [id=arn:aws:batch:ap-southeast-2:<ACCOUNT_ID>:job-definition/drive-sim-eval-job:1]
+aws_iam_role_policy.job: Destroying... [id=drive-sim-eval-batch-job:s3-scenarios-and-results]
+aws_iam_role_policy.job: Destruction complete after 1s
+aws_iam_role_policy_attachment.batch_service: Destruction complete after 1s
+aws_iam_role.batch_service: Destroying... [id=drive-sim-eval-batch-service]
+aws_iam_role_policy_attachment.execution: Destruction complete after 1s
+aws_s3_bucket_website_configuration.site: Destruction complete after 1s
+aws_s3_bucket_public_access_block.data: Destruction complete after 2s
+aws_s3_bucket.data: Destroying... [id=drive-sim-eval-data-<ACCOUNT_ID>]
+aws_s3_bucket_policy.site: Destruction complete after 2s
+aws_s3_bucket_public_access_block.site: Destroying... [id=drive-sim-eval-site-<ACCOUNT_ID>]
+aws_batch_job_definition.sim: Destruction complete after 2s
+aws_cloudwatch_log_group.batch: Destroying... [id=/aws/batch/drive-sim-eval]
+aws_ecr_repository.main: Destroying... [id=drive-sim-eval]
+aws_iam_role.execution: Destroying... [id=drive-sim-eval-batch-execution]
+aws_iam_role.job: Destroying... [id=drive-sim-eval-batch-job]
+aws_iam_role.batch_service: Destruction complete after 1s
+aws_route_table_association.public[1]: Destruction complete after 2s
+aws_route_table_association.public[0]: Destruction complete after 3s
+aws_subnet.public[1]: Destroying... [id=subnet-088cba971c890d5dc]
+aws_route_table.public: Destroying... [id=rtb-0e4db9bc60b9a171b]
+aws_subnet.public[0]: Destroying... [id=subnet-0a01862e5bf839470]
+aws_s3_bucket.data: Destruction complete after 1s
+aws_s3_bucket_public_access_block.site: Destruction complete after 1s
+aws_s3_bucket.site: Destroying... [id=drive-sim-eval-site-<ACCOUNT_ID>]
+aws_iam_role.job: Destruction complete after 1s
+aws_iam_role.execution: Destruction complete after 1s
+aws_security_group.batch: Destruction complete after 3s
+aws_cloudwatch_log_group.batch: Destruction complete after 2s
+aws_s3_bucket.site: Destruction complete after 1s
+aws_subnet.public[0]: Destruction complete after 1s
+aws_ecr_repository.main: Destruction complete after 2s
+aws_subnet.public[1]: Destruction complete after 1s
+aws_route_table.public: Destruction complete after 2s
+aws_internet_gateway.main: Destroying... [id=igw-0fd8d649404737fac]
+aws_internet_gateway.main: Destruction complete after 2s
+aws_vpc.main: Destroying... [id=vpc-05aec448fc4115c97]
+aws_vpc.main: Destruction complete after 1s
+
+Destroy complete! Resources: 23 destroyed.
+destroy complete
+exit=0

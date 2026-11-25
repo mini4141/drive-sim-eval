@@ -16,6 +16,7 @@ run_checks() {
   echo "-- direct checks (authoritative)"
   check "batch job queues" "$(aws batch describe-job-queues --region $R --query "jobQueues[?starts_with(jobQueueName,'$P')].jobQueueName" --output text | tr -d '\r')"
   check "batch compute environments" "$(aws batch describe-compute-environments --region $R --query "computeEnvironments[?starts_with(computeEnvironmentName,'$P')].computeEnvironmentName" --output text | tr -d '\r')"
+  check "ACTIVE batch job definitions" "$(aws batch describe-job-definitions --region $R --status ACTIVE --query "jobDefinitions[?starts_with(jobDefinitionName,'$P')].jobDefinitionArn" --output text | tr -d '')"
   check "ECR repositories" "$(aws ecr describe-repositories --region $R --query "repositories[?repositoryName=='$P'].repositoryName" --output text 2>/dev/null | tr -d '\r')"
   check "CloudFront distributions" "$(aws cloudfront list-distributions --query "DistributionList.Items[?contains(Comment,'$P')].Id" --output text 2>/dev/null | tr -d '\r')"
   check "VPCs tagged Project=$P" "$(aws ec2 describe-vpcs --region $R --filters Name=tag:Project,Values=$P --query 'Vpcs[].VpcId' --output text | tr -d '\r')"
@@ -25,8 +26,8 @@ run_checks() {
 
   echo "-- tagging API (may lag a few minutes after deletion)"
   for region in $R us-east-1; do
-    hits="$(aws resourcegroupstaggingapi get-resources --region $region --tag-filters Key=Project,Values=$P --query 'ResourceTagMappingList[].ResourceARN' --output text | tr -d '\r')"
-    if [ -z "$hits" ]; then echo "OK    tagging API ($region): no resources"; else echo "NOTE  tagging API ($region) still lists: $hits"; fi
+    hits="$(aws resourcegroupstaggingapi get-resources --region $region --tag-filters Key=Project,Values=$P --query "ResourceTagMappingList[].ResourceARN" --output text 2>&1 | tr -d '\r' || true)"
+    if [ -z "$hits" ]; then echo "OK    tagging API ($region): no resources"; elif echo "$hits" | grep -q "explicit deny"; then echo "NOTE  tagging API ($region) not queryable (blocked by an org service control policy)"; else echo "NOTE  tagging API ($region) still lists: $hits"; fi
   done
   if [ "$fail" = 0 ]; then echo "RESULT: nothing billable remains"; else echo "RESULT: resources remain (see FOUND lines)"; fi
   return $fail

@@ -1,0 +1,15 @@
+verify-destroyed 2026-11-25T15:57:46Z
+-- direct checks (authoritative)
+OK    batch job queues: none
+OK    batch compute environments: none
+OK    ACTIVE batch job definitions: none
+OK    ECR repositories: none
+OK    CloudFront distributions: none
+OK    VPCs tagged Project=drive-sim-eval: none
+OK    S3 buckets: none
+OK    CloudWatch log groups: none
+OK    IAM roles: none
+-- tagging API (may lag a few minutes after deletion)
+NOTE  tagging API (ap-southeast-2) still lists: arn:aws:batch:ap-southeast-2:<ACCOUNT_ID>:job-definition/drive-sim-eval-job:1
+NOTE  tagging API (us-east-1) not queryable (blocked by an org service control policy)
+RESULT: nothing billable remains
