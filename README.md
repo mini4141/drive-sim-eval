@@ -27,7 +27,7 @@ flowchart LR
   subgraph aws[AWS]
     ECR --> BATCH[AWS Batch Fargate<br/>array job]
     BATCH --> S3R[(S3 results)]
-    S3R --> CF[CloudFront] --> UI2[Viewer]
+    S3R --> WEB[S3 website] --> UI2[Viewer]
   end
 ```
 
@@ -77,7 +77,7 @@ simeval/    Python package: cli, batch, repro, diff, profile, scenarios, cloud
 tools/      train_policy.py, policy_weights.json (committed)
 configs/    open_loop.yaml, closed_loop.yaml, diff.yaml, platforms/*.yaml
 viewer/     React 19 + Vite + Recharts app (reads results/**)
-infra/      Terraform (VPC, ECR, S3, Batch, CloudFront, IAM)
+infra/      Terraform (VPC, ECR, S3 website, Batch, IAM)
 docker/     multi-stage Dockerfile
 scripts/    dev-up, test-all, seed, capture-proof, deploy, destroy, verify-destroyed
 docs/       DECISIONS.md, AI_USAGE.md, PORTFOLIO.md
